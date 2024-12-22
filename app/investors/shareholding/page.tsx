@@ -1,5 +1,8 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Chart } from "@/components/ui/chart";
+import { PieChart, Pie, LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function ShareholdingPage() {
   return (
@@ -12,28 +15,34 @@ export default function ShareholdingPage() {
           </CardHeader>
           <CardContent>
             <Chart
-              type="pie"
-              data={{
-                labels: ['Promoters', 'Public', 'Institutions', 'Others'],
-                datasets: [{
-                  data: [45, 30, 15, 10],
-                  backgroundColor: [
-                    'hsl(var(--chart-1))',
-                    'hsl(var(--chart-2))',
-                    'hsl(var(--chart-3))',
-                    'hsl(var(--chart-4))',
-                  ],
-                }],
+              config={{
+                promoters: { color: 'hsl(var(--chart-1))' },
+                public: { color: 'hsl(var(--chart-2))' },
+                institutions: { color: 'hsl(var(--chart-3))' },
+                others: { color: 'hsl(var(--chart-4))' },
               }}
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    position: 'bottom',
-                  },
-                },
-              }}
-            />
+            >
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={[
+                      { name: 'Promoters', value: 45 },
+                      { name: 'Public', value: 30 },
+                      { name: 'Institutions', value: 15 },
+                      { name: 'Others', value: 10 },
+                    ]}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    fill="#8884d8"
+                  />
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </Chart>
           </CardContent>
         </Card>
         
@@ -43,33 +52,33 @@ export default function ShareholdingPage() {
           </CardHeader>
           <CardContent>
             <Chart
-              type="line"
-              data={{
-                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-                datasets: [{
-                  label: 'Promoter Holding',
-                  data: [45, 45, 45, 45],
-                  borderColor: 'hsl(var(--chart-1))',
-                  tension: 0.1,
-                }, {
-                  label: 'Public Holding',
-                  data: [30, 31, 32, 30],
-                  borderColor: 'hsl(var(--chart-2))',
-                  tension: 0.1,
-                }],
+              config={{
+                promoterHolding: { color: 'hsl(var(--chart-1))' },
+                publicHolding: { color: 'hsl(var(--chart-2))' },
               }}
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    position: 'bottom',
-                  },
-                },
-              }}
-            />
+            >
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart
+                  data={[
+                    { quarter: 'Q1', promoterHolding: 45, publicHolding: 30 },
+                    { quarter: 'Q2', promoterHolding: 45, publicHolding: 31 },
+                    { quarter: 'Q3', promoterHolding: 45, publicHolding: 32 },
+                    { quarter: 'Q4', promoterHolding: 45, publicHolding: 30 },
+                  ]}
+                >
+                  <XAxis dataKey="quarter" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="promoterHolding" name="Promoter Holding" stroke="var(--color-promoterHolding)" />
+                  <Line type="monotone" dataKey="publicHolding" name="Public Holding" stroke="var(--color-publicHolding)" />
+                </LineChart>
+              </ResponsiveContainer>
+            </Chart>
           </CardContent>
         </Card>
       </div>
     </div>
   );
 }
+

@@ -363,3 +363,6 @@ export {
   ChartLegendContent,
   ChartStyle,
 };
+
+
+export const Chart = ChartContainer;
